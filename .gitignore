@@ -1,0 +1,7 @@
+_build
+blib
+TAP-Parser-SourceHandler-*
+MANIFEST
+MANIFEST.bak
+*META.*
+Build
