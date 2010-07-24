@@ -9,19 +9,13 @@ use TAP::Parser::Iterator::Process ();
 @ISA = qw(TAP::Parser::SourceHandler);
 TAP::Parser::IteratorFactory->register_handler(__PACKAGE__);
 
-=head1 NAME
+our $VERSION = '3.22';
+
+=head1 Name
 
 TAP::Parser::SourceHandler::MyTAP - Stream TAP from MyTAP test scripts
 
-=head1 VERSION
-
-Version 3.22
-
-=cut
-
-$VERSION = '3.22';
-
-=head1 SYNOPSIS
+=head1 Synopsis
 
 In F<Build.PL> for your application with MyTAP tests in F<t/*.my>:
 
@@ -53,6 +47,10 @@ If you're using L<C<prove>|prove>:
                        --mytap-option user=root \
                        --mytap-option suffix=.my
 
+If you have only MyTAP tests, just use C<my_prove>:
+
+  my_prove --database try --user root
+
 Direct use:
 
   use TAP::Parser::Source;
@@ -70,7 +68,7 @@ Direct use:
   my $vote  = $class->can_handle( $source );
   my $iter  = $class->make_iterator( $source );
 
-=head1 DESCRIPTION
+=head1 Description
 
 This source handler executes MyTAP MySQL tests. It does two things:
 
@@ -100,14 +98,8 @@ here's how:
 
 =item *
 
-Build your test database, including MyTAP. It's best to install it in its own
-database. To build it and install it in the schema "tap", open F<mytap.sql>
-in your favorite editor and uncomment these two lines:
-
-  -- CREATE SCHEMA IF NOT EXISTS tap;
-  -- USE tap;
-
-Then install it in your MySQL cluster:
+Download L<MyTAP|http://github.org/theory/mytap/> and install it into your
+MySQL server:
 
   mysql -u root < mytap.sql
 
@@ -140,17 +132,17 @@ test functions.
 
 =item *
 
-Run your tests with C<prove> like so:
+Run your tests with C<my_prove> like so:
 
-  prove --source Perl \
+  my_prove --database try --user root t/
+
+Or, if you have Perl F<.t> and MyTAP F<.my> tests, run them all together with
+C<prove>:
+
         --ext .t --ext .my \
         --source MyTAP --mytap-option database=try \
                        --mytap-option user=root \
                        --mytap-option suffix=.my
-
-This will run both your Perl F<.t> tests and your MyTAP F<.my> tests all
-together.
-
 =item *
 
 Once you're sure that you've got the MyTAP tests working, modify your
@@ -187,7 +179,7 @@ And that's it. Now get testing!
 
 =back
 
-=head1 METHODS
+=head1 Methods
 
 =head2 Class Methods
 
@@ -313,7 +305,7 @@ sub make_iterator {
     });
 }
 
-=head1 SEE ALSO
+=head1 See Also
 
 L<TAP::Object>,
 L<TAP::Parser>,
@@ -326,8 +318,15 @@ L<TAP::Parser::SourceHandler::File>,
 L<TAP::Parser::SourceHandler::Handle>,
 L<TAP::Parser::SourceHandler::RawTAP>
 
-=head1 AUTHOR
+=head1 Author
 
 David E. Wheeler <dwheeler@cpan.org>
+
+=head1 Copyright and Licence
+
+Copyright (c) 2010 David E. Wheeler. Some Rights Reserved.
+
+This module is free software; you can redistribute it and/or modify it under
+the same terms as Perl itself.
 
 =cut
