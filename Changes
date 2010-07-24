@@ -1,5 +1,7 @@
 Revision history for Perl extension DBIx::Connector.
 
+3.23
+
 3.22  2010-07-24T00:08:11
       - Initial version, with code borrowed from
         TAP::Parser::SourceHandler::pgTAP.
