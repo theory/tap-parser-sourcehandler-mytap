@@ -10,8 +10,8 @@ MyTAP tests:
 
     prove --source Perl \
           --ext .t --ext .my \
-          --source MyTAP --mytap-option dbname=try \
-                         --mytap-option username=postgres \
+          --source MyTAP --mytap-option database=try \
+                         --mytap-option user=root \
                          --mytap-option suffix=.my
 
 Or in F<Build.PL> for your application with MyTAP tests in F<t/*.my>:
@@ -24,8 +24,8 @@ Or in F<Build.PL> for your application with MyTAP tests in F<t/*.my>:
           sources => {
               Perl  => undef,
               MyTAP => {
-                  dbname   => 'try',
-                  username => 'root',
+                  database => 'try',
+                  user     => 'root',
                   suffix   => '.my',
               },
           }
