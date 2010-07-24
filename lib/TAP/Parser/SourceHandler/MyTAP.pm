@@ -307,16 +307,25 @@ sub make_iterator {
 
 =head1 See Also
 
-L<TAP::Object>,
-L<TAP::Parser>,
-L<TAP::Parser::IteratorFactory>,
-L<TAP::Parser::SourceHandler>,
-L<TAP::Parser::SourceHandler::Executable>,
-L<TAP::Parser::SourceHandler::Perl>,
-L<TAP::Parser::SourceHandler::myTAP>
-L<TAP::Parser::SourceHandler::File>,
-L<TAP::Parser::SourceHandler::Handle>,
-L<TAP::Parser::SourceHandler::RawTAP>
+=item * L<TAP::Object>
+
+=item * L<TAP::Parser>
+
+=item * L<TAP::Parser::IteratorFactory>
+
+=item * L<TAP::Parser::SourceHandler>
+
+=item * L<TAP::Parser::SourceHandler::Executable>
+
+=item * L<TAP::Parser::SourceHandler::Perl>
+
+=item * L<TAP::Parser::SourceHandler::pgTAP>
+
+=item * L<TAP::Parser::SourceHandler::File>
+
+=item * L<TAP::Parser::SourceHandler::Handle>
+
+=item * L<TAP::Parser::SourceHandler::RawTAP>
 
 =head1 Support
 

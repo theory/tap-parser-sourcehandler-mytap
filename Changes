@@ -1,6 +1,7 @@
 Revision history for Perl extension TAP::Parser::SourceHandler::MyTAP.
 
 3.23
+      - Minor documentation tweaks.
 
 3.22  2010-07-24T00:08:11
       - Initial version, with code borrowed from
