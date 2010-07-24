@@ -318,6 +318,17 @@ L<TAP::Parser::SourceHandler::File>,
 L<TAP::Parser::SourceHandler::Handle>,
 L<TAP::Parser::SourceHandler::RawTAP>
 
+=head1 Support
+
+This module is managed in an open L<GitHub
+repository|http://github.com/theory/tap-parser-sourcehandler-mytap/>. Feel
+free to fork and contribute, or to clone
+C<git://github.com/theory/tap-parser-sourcehandler-mytap.git> and send
+patches!
+
+Found a bug? Please L<post|http://github.com/theory/pod-site/issues> or
+L<email|mailto:bug-tap-parser-sourcehandler-mytap@rt.cpan.org> a report!
+
 =head1 Author
 
 David E. Wheeler <dwheeler@cpan.org>
