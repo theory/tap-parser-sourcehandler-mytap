@@ -9,7 +9,7 @@ $|++;
 
 Getopt::Long::Configure(qw(no_ignore_case bundling pass_through));
 
-my $opts = { color => 1 };
+my $opts = { color => 1, comments => 1 };
 
 Getopt::Long::GetOptions(
     'mysql-bin|b=s' => \$opts->{mysql},
@@ -20,6 +20,7 @@ Getopt::Long::GetOptions(
     'port|P=s'      => \$opts->{port},
     'version|V'     => \$opts->{version},
     'ext=s@'        => \$opts->{ext},
+    'comments|o!'   => \$opts->{comments},
     'help|H'        => \$opts->{help},
     'man|m'         => \$opts->{man},
 ) or require Pod::Usage && Pod::Usage::pod2usage(2);
@@ -47,6 +48,7 @@ my $app = App::Prove->new;
 $app->process_args(
     @ARGV,
     (map { ('--ext' => $_) } @{ $opts->{ext} || ['.my'] }),
+    ($opts->{comments} ? ('--comments') : ()),
     qw(--source MyTAP),
     map {
         ('--mytap-option' => "$_=$opts->{$_}")
@@ -127,7 +129,7 @@ Boolean options:
       --dry             Dry run. Show test that would have run.
       --ext             Set the extension for tests (default '.t')
  -f,  --failures        Show failed tests.
- -o,  --comments        Show comments.
+ -o,  --comments        Show comments and diagnostics.
       --ignore-exit     Ignore exit status from test scripts.
       --merge           Merge test scripts' STDERR with their STDOUT.
  -r,  --recurse         Recursively descend into directories.
@@ -271,6 +273,13 @@ L<TAP::Formatter::File|TAP::Formatter::File> if the output isn't a TTY.
 
 Send the TAP output to a TAP archive file as well as to the normal output
 destination. The archive formats supported are F<.tar> and F<.tar.gz>.
+
+=item C<-o>
+
+=item C<--comments>
+
+Show comments, such as diagnostics output by C<diag()>. Enabled by default.
+use C<--no-comments> to disable.
 
 =item C<--trap>
 

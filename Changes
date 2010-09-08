@@ -4,6 +4,9 @@ Revision history for Perl extension TAP::Parser::SourceHandler::MyTAP.
       - Minor documentation tweaks.
       - Disabled output buffering in `my_prove`, so that test output appears
         as tests run.
+      - Enable comments by default. This is so that failure diagnostics will
+        always appear, not just when run with --verobse. Use --no-comments or
+        --quiet to disable comment output.
 
 3.22  2010-07-24T00:08:11
       - Initial version, with code borrowed from
