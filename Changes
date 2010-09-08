@@ -1,6 +1,6 @@
 Revision history for Perl extension TAP::Parser::SourceHandler::MyTAP.
 
-3.23
+3.23  2010-09-08T22:40:39
       - Minor documentation tweaks.
       - Disabled output buffering in `my_prove`, so that test output appears
         as tests run.
