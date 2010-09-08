@@ -307,6 +307,8 @@ sub make_iterator {
 
 =head1 See Also
 
+=over
+
 =item * L<TAP::Object>
 
 =item * L<TAP::Parser>
@@ -327,6 +329,8 @@ sub make_iterator {
 
 =item * L<TAP::Parser::SourceHandler::RawTAP>
 
+=back
+
 =head1 Support
 
 This module is managed in an open L<GitHub
@@ -342,7 +346,7 @@ L<email|mailto:bug-tap-parser-sourcehandler-mytap@rt.cpan.org> a report!
 
 David E. Wheeler <dwheeler@cpan.org>
 
-=head1 Copyright and Licence
+=head1 Copyright and License
 
 Copyright (c) 2010 David E. Wheeler. Some Rights Reserved.
 
