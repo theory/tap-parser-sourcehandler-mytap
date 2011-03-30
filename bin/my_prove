@@ -57,7 +57,7 @@ $app->process_args(
     } qw(mysql database user password host port)
 );
 
-exit $app->run ? 0 : 1;
+exit($app->run ? 0 : 1);
 
 __END__
 
