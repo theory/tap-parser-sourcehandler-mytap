@@ -1,6 +1,6 @@
 Revision history for Perl extension TAP::Parser::SourceHandler::MyTAP.
 
-3.24  
+3.24 2011-03-30T18:24:32 
      - Fixed exit code in `my_prove`. It no longer returns 0 on fail and 1 on
        pass. Thanks to Rod Taylor for the report!
 
