@@ -1,5 +1,7 @@
 Revision history for Perl extension TAP::Parser::SourceHandler::MyTAP.
 
+3.26
+
 3.25 2013-12-18T00:45:29Z
      - Removed Pod tests.
      - Restored to CPAN (not sure when it was deleted or why).
