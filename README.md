@@ -16,25 +16,25 @@ MyTAP tests:
 
 Or in F<Build.PL> for your application with MyTAP tests in F<t/*.my>:
 
-  Module::Build->new(
-      module_name        => 'MyApp',
-      test_file_exts     => [qw(.t .my)],
-      use_tap_harness    => 1,
-      tap_harness_args   => {
-          sources => {
-              Perl  => undef,
-              MyTAP => {
-                  database => 'try',
-                  user     => 'root',
-                  suffix   => '.my',
-              },
-          }
-      },
-      build_requires     => {
-          'Module::Build'                     => '0.30',
-          'TAP::Parser::SourceHandler::MyTAP' => '3.22',
-      },
-  )->create_build_script;
+    Module::Build->new(
+        module_name        => 'MyApp',
+        test_file_exts     => [qw(.t .my)],
+        use_tap_harness    => 1,
+        tap_harness_args   => {
+            sources => {
+                Perl  => undef,
+                MyTAP => {
+                    database => 'try',
+                    user     => 'root',
+                    suffix   => '.my',
+                },
+            }
+        },
+        build_requires     => {
+            'Module::Build'                     => '0.30',
+            'TAP::Parser::SourceHandler::MyTAP' => '3.22',
+        },
+    )->create_build_script;
 
 Installation
 ------------
@@ -54,7 +54,7 @@ TAP::Parser::SourceHandler::MyTAP requires TAP::Parser::SourceHandler.
 Copyright and Licence
 ---------------------
 
-Copyright (c) 2010 David E. Wheeler. Some Rights Reserved.
+Copyright (c) 2010-2013 David E. Wheeler. Some Rights Reserved.
 
 This module is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself.
