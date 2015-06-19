@@ -48,6 +48,7 @@ my $app = App::Prove->new;
 $app->process_args(
     @ARGV,
     (map { ('--ext' => $_) } @{ $opts->{ext} || ['.my'] }),
+    (map { ('--mytap-option' => "suffix=$_") } @{ $opts->{ext} || [] }),
     ($opts->{comments} ? ('--comments') : ()),
     qw(--source MyTAP),
     map {
@@ -127,7 +128,7 @@ Boolean options:
                         (default)
       --nocount         Disable the X/Y test count.
       --dry             Dry run. Show test that would have run.
-      --ext             Set the extension for tests (default '.t')
+      --ext             Set the extension for tests (default '.my')
  -f,  --failures        Show failed tests.
  -o,  --comments        Show comments and diagnostics.
       --ignore-exit     Ignore exit status from test scripts.
@@ -159,8 +160,6 @@ Options that take arguments:
                         tests.)
       --harness         Define test harness to use.  See TAP::Harness.
       --formatter       Result formatter to use. See FORMATTERS.
-      --source          Load and/or configure a SourceHandler. See
-                        SOURCE HANDLERS.
  -a,  --archive out.tgz Store the resulting TAP in an archive file.
  -j,  --jobs N          Run N test jobs in parallel (try 9.)
       --state=opts      Control prove's persistent state.
@@ -173,6 +172,8 @@ Options that take arguments:
  -P,  --port            Port to which to connect.
 
 =head1 Options Details
+
+=head2 Database Options
 
 =over
 
@@ -235,56 +236,92 @@ Connect to the MySQL server on the given host.
 
 The TCP/IP port number to use for the connection.
 
-=item C<-t>
+=head2 Behavioral Options
 
-=item C<--color>
+=overr
 
-  my_prove --color
-  my_prove -c
+=item C<--ext>
 
-Display test results in color. Colored test output is the default, but if
-output is not to a terminal, color is disabled.
+  my_prove --ext .sql tests/
 
-Requires L<Term::ANSIColor|Term::ANSIColor> on Unix-like platforms and
-L<Win32::Console|Win32::Console> on Windows. If the necessary module is not
-installed colored output will not be available.
+Set the extension for test files (default F<.my>). May be specified multiple
+times if you have test scripts with multiple extensions, though all must be
+MyTAP tests:
 
-=item C<--nocolor>
+  my_prove --ext .sql --ext .my --ext .myt
 
-Do not display test results in color.
+If you want to mix MyTAP tets with other TAP-emitting tests, like Perl tests,
+use C<prove> instead, where C<--ext> identifies any test file, and
+C<--mytap-option suffix=> lets you specify one or more extensions for MyTAP
+tests.
 
-=item C<-f>
+  prove --source Perl \
+        --ext .t --ext .my \
+        --source MyTAP --mytap-option suffix=.my
 
-=item C<--formatter>
+=item C<-r>
 
-  my_prove --formatter TAP::Formatter::File
-  my_prove -f TAP::Formatter::Console
+=item C<--recurse>
 
-The name of the class to use to format output. The default is
-L<TAP::Formatter::Console|TAP::Formatter::Console>, or
-L<TAP::Formatter::File|TAP::Formatter::File> if the output isn't a TTY.
+  my_prove --recurse tests/
+  my_prove --recurse sql/
 
-=item C<-a>
+Recursively descend into directories when searching for tests.
 
-=item C<--archive>
+=item C<--ignore-exit>
 
-  my_prove --archive tap.tar.gz
-  my_prove -a test_output.tar
+  my_prove --ignore-exit
 
-Send the TAP output to a TAP archive file as well as to the normal output
-destination. The archive formats supported are F<.tar> and F<.tar.gz>.
-
-=item C<-o>
-
-=item C<--comments>
-
-Show comments, such as diagnostics output by C<diag()>. Enabled by default.
-use C<--no-comments> to disable.
+Ignore exit status from test scripts. Normally if a script triggers a database
+exception, C<mysql> will exit with an error code and, even if all tests passed,
+the test will be considered a failure. Use C<--ignore-exit> to ignore such
+situations (at your own peril).
 
 =item C<--trap>
 
 The C<--trap> option will attempt to trap C<SIGINT> (C<Ctrl-C>) during a test
 run and display the test summary even if the run is interrupted
+
+=item C<--harness>
+
+  my_prove --harness TAP::Harness::Color
+
+Specify a subclass of L<TAP::Harness> to use for the test harness. Defaults to
+TAP::Harness (unless C<--archive> is specified, in which case it uses
+L<TAP::Harness::Archive>).
+
+=item C<-j>
+
+=item C<-jobs>
+
+Run N test jobs in parallel (try 9.)
+
+=item C<--rc>
+
+  my_prove --rc my_prove.rc
+
+Process options from the specified configuration file.
+
+If C<--rc> is not specified and F<./.proverc> or F<~/.proverc> exist, they
+will be read and the options they contain processed before the command line
+options. Options in configuration files are specified in the same way as
+command line options:
+
+           # .proverc
+           --state=hot,fast,save
+           -j9
+
+Under Windows and VMS the option file is named F<_proverc> rather than
+F<.proverc> and is sought only in the current directory.
+
+Due to how options are loaded you cannot use F<.proverc> for
+C<my_prove>-specific options, only C<prove> options. However, <my_prove> does
+support all of the usual libpq
+L<Environment Variables|http://www.postgresql.org/docs/current/static/libpq-envars.html>.
+
+=item C<--norc>
+
+Do not process F<./.proverc> or F<~/.proverc>.
 
 =item C<--state>
 
@@ -410,6 +447,169 @@ Default option file processing is disabled by the C<--norc> option.
 Under Windows and VMS the option file is named F<_proverc> rather than
 F<.proverc> and is sought only in the current directory.
 
+=head2 Display Options
+
+=over
+
+=item C<-v>
+
+=item C<--verbose>
+
+  my_prove --verbose
+  my_prove -v
+
+Display standard output of test scripts while running them. This behavior can
+also be triggered by setting the C<$TEST_VERBOSE> environment variable to a
+true value.
+
+=item C<-f>
+
+=item C<--failures>
+
+  my_prove --failures
+  my_prove -f
+
+Show failed tests.
+
+=item C<-o>
+
+=item C<--comments>
+
+Show comments, such as diagnostics output by C<diag()>. Enabled by default.
+use C<--no-comments> to disable.
+
+=item C<--directives>
+
+  my_prove --directives
+
+Only show results with TODO or SKIP directives.
+
+=item C<-q>
+
+=item C<--quiet>
+
+  my_prove --quiet
+  my_prove -q
+
+Suppress some test output while running tests.
+
+=item C<-Q>
+
+=item C<--QUIET>
+
+  my_prove --QUIET
+  my_prove -Q
+
+Only print summary results.
+
+=item C<--parse>
+
+  my_prove --parse
+
+Enables the display of any TAP parsing errors as tests run. Useful for
+debugging new TAP emitters.
+
+=item C<--normalize>
+
+  my_prove --normalize
+
+Normalize TAP output in verbose output. Errors in the harnessed TAP corrected
+by the parser will be corrected.
+
+=item C<--dry>
+
+=item C<-D>
+
+  my_prove --dry tests/
+  my_prove -D
+
+Dry run. Just outputs a list of the tests that would have been run.
+
+=item C<--merge>
+
+Merge test scripts' C<STDERR> with their C<STDOUT>. Not really relevant to
+MyTAP tests, which only print to C<STDERR> when an exception is thrown.
+
+=item C<-t>
+
+=item C<--timer>
+
+  my_prove --timer
+  my_prove -t
+
+Print elapsed time after each test file.
+
+=item C<-c>
+
+=item C<--color>
+
+  my_prove --color
+  my_prove -c
+
+Display test results in color. Colored test output is the default, but if
+output is not to a terminal, color is disabled.
+
+Requires L<Term::ANSIColor|Term::ANSIColor> on Unix-like platforms and
+L<Win32::Console|Win32::Console> on Windows. If the necessary module is not
+installed colored output will not be available.
+
+=item C<--nocolor>
+
+Do not display test results in color.
+
+=item C<--shuffle>
+
+  my_prove --shuffle tests/
+
+Test scripts are normally run in alphabetical order. Use C<--reverse> to run
+them in in random order. Not relevant when used with C<--runtests>.
+
+=item C<--reverse>
+
+  my_prove --reverse tests/
+
+Test scripts are normally run in alphabetical order. Use C<--reverse> to run
+them in reverse order. Not relevant when used with C<--runtests>.
+
+=item C<-a>
+
+=item C<--archive>
+
+  my_prove --archive tap.tar.gz
+  my_prove -a test_output.tar
+
+=item C<-f>
+
+=item C<--formatter>
+
+  my_prove --formatter TAP::Formatter::File
+  my_prove -f TAP::Formatter::Console
+
+The name of the class to use to format output. The default is
+L<TAP::Formatter::Console|TAP::Formatter::Console>, or
+L<TAP::Formatter::File|TAP::Formatter::File> if the output isn't a TTY.
+
+=item C<--count>
+
+  my_prove --count
+
+Show the X/Y test count as tests run when not verbose (default).
+
+=item C<--nocount>
+
+  my_prove --nocount
+
+Disable the display of the X/Y test count as tests run.
+
+Send the TAP output to a TAP archive file as well as to the normal output
+destination. The archive formats supported are F<.tar> and F<.tar.gz>.
+
+=back
+
+=head2 Metadata Options
+
+=over
+
 =item C<-H>
 
 =item C<--help>
@@ -445,7 +645,7 @@ David E. Wheeler <david@kineticode.com>
 
 =head1 Copyright and License
 
-Copyright (c) 2010-2013 David E. Wheeler. Some Rights Reserved.
+Copyright (c) 2010-2015 David E. Wheeler. Some Rights Reserved.
 
 This module is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself.

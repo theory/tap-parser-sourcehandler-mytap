@@ -6,7 +6,7 @@ BEGIN {
 
 use strict;
 
-use Test::More tests => 36;
+use Test::More tests => 37;
 
 use IO::File;
 use IO::Handle;
@@ -65,6 +65,14 @@ $dir    = catdir curdir, 't', 'bin' unless -d $dir;
                     file    => { lc_ext => '.foo' }
                 },
                 config => { MyTAP => { suffix => '.foo' } },
+                vote   => 1,
+            },
+            {   name => 'config_suffixes',
+                meta => {
+                    is_file => 1,
+                    file    => { lc_ext => '.foo' }
+                },
+                config => { MyTAP => { suffix => [qw(.foo .bar)] } },
                 vote   => 1,
             },
             {   name => 'not_file',
