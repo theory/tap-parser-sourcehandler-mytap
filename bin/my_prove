@@ -266,7 +266,8 @@ tests.
   my_prove --recurse tests/
   my_prove --recurse sql/
 
-Recursively descend into directories when searching for tests.
+Recursively descend into directories when searching for tests. Be sure to
+specify C<--ext> if your tess do not end in C<.my>.
 
 =item C<--ignore-exit>
 
