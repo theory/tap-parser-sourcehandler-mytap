@@ -1,5 +1,7 @@
 Revision history for Perl extension TAP::Parser::SourceHandler::MyTAP.
 
+3.27
+
 3.26 2015-06-19T23:43:55Z
      - The `--ext` option to `my_prove` now always identifies MyTAP tests. Use
        `prove` with the `--mytap-option suffix=.foo` option to mix MyTAP tests
