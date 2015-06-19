@@ -236,9 +236,11 @@ Connect to the MySQL server on the given host.
 
 The TCP/IP port number to use for the connection.
 
+=back
+
 =head2 Behavioral Options
 
-=overr
+=over
 
 =item C<--ext>
 
@@ -250,7 +252,7 @@ MyTAP tests:
 
   my_prove --ext .sql --ext .my --ext .myt
 
-If you want to mix MyTAP tets with other TAP-emitting tests, like Perl tests,
+If you want to mix MyTAP tests with other TAP-emitting tests, like Perl tests,
 use C<prove> instead, where C<--ext> identifies any test file, and
 C<--mytap-option suffix=> lets you specify one or more extensions for MyTAP
 tests.
@@ -267,7 +269,7 @@ tests.
   my_prove --recurse sql/
 
 Recursively descend into directories when searching for tests. Be sure to
-specify C<--ext> if your tess do not end in C<.my>.
+specify C<--ext> if your tests do not end in C<.my>.
 
 =item C<--ignore-exit>
 
@@ -316,9 +318,7 @@ Under Windows and VMS the option file is named F<_proverc> rather than
 F<.proverc> and is sought only in the current directory.
 
 Due to how options are loaded you cannot use F<.proverc> for
-C<my_prove>-specific options, only C<prove> options. However, <my_prove> does
-support all of the usual libpq
-L<Environment Variables|http://www.postgresql.org/docs/current/static/libpq-envars.html>.
+C<my_prove>-specific options, only C<prove> options.
 
 =item C<--norc>
 
@@ -447,6 +447,8 @@ Default option file processing is disabled by the C<--norc> option.
 
 Under Windows and VMS the option file is named F<_proverc> rather than
 F<.proverc> and is sought only in the current directory.
+
+=back
 
 =head2 Display Options
 
