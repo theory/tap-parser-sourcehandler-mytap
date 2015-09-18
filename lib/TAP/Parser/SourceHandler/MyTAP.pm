@@ -291,8 +291,13 @@ sub make_iterator {
       --unbuffered
     );
 
-    for (qw(user password host port database)) {
+    for (qw(user host port database)) {
         push @command, "--$_" => $config->{$_} if defined $config->{$_};
+    }
+
+    # Special-case --password, which requires = before the value. O_o
+    if (my $pw = $config->{password}) {
+        push @command, "--password=$pw";
     }
 
     my $fn = ref $source->raw ? ${ $source->raw } : $source->raw;
