@@ -2,6 +2,9 @@ Revision history for Perl extension TAP::Parser::SourceHandler::MyTAP.
 
 3.27
      - Fixed password handling.
+     - Refactored `my_prove` to better follow the interface provided by
+       App::Prove. This improves option processing, notably single-letter
+       option bundling now works properly.
 
 3.26 2015-06-19T23:43:55Z
      - The `--ext` option to `my_prove` now always identifies MyTAP tests. Use

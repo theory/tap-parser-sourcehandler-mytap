@@ -7,59 +7,90 @@ use Getopt::Long;
 our $VERSION = '3.27';
 $|++;
 
-Getopt::Long::Configure(qw(no_ignore_case bundling pass_through));
+# Fire up the app, process args, and run the tests.
+my $app = App::Prove::MyTAP->new;
+$app->process_args(@ARGV);
+exit($app->run ? 0 : 1);
 
-my $opts = { color => 1, comments => 1 };
+#######################################################################################
+package App::Prove::MyTAP;
+use base 'App::Prove';
 
-Getopt::Long::GetOptions(
-    'mysql-bin|b=s' => \$opts->{mysql},
-    'database|D=s'  => \$opts->{database},
-    'user|u=s'      => \$opts->{user},
-    'password|p=s'  => \$opts->{password},
-    'host|h=s'      => \$opts->{host},
-    'port|P=s'      => \$opts->{port},
-    'version|V'     => \$opts->{version},
-    'ext=s@'        => \$opts->{ext},
-    'comments|o!'   => \$opts->{comments},
-    'help|H'        => \$opts->{help},
-    'man|m'         => \$opts->{man},
-) or require Pod::Usage && Pod::Usage::pod2usage(2);
-
-if ($opts->{version}) {
-    print 'my_prove ', main->VERSION, $/;
-    exit;
+BEGIN {
+    __PACKAGE__->mk_methods(qw(mysql database user password host port));
 }
 
-if ( $opts->{help} or $opts->{man} ) {
+sub _initialize {
+    my $self = shift->SUPER::_initialize(@_);
+
+    # Set up defaults.
+    $self->{sources} = ['MyTAP'];
+    $self->{color} = 1;
+    $self->{comments} = 1;
+    return $self;
+}
+
+sub process_args {
+    my $self = shift;
+    my $opts;
+    # We need to locally define a function to do argument processing.
+    my $get_options = sub(@) {
+        Getopt::Long::Configure(qw(no_ignore_case bundling pass_through));
+        # Silence "Duplicate specification" warnings, since we replace some of
+        # App::Prove's options.
+        local $^W;
+        return Getopt::Long::GetOptions(
+            @_,
+            'mysql-bin|b=s' => \$opts->{mysql},
+            'database|D=s'  => \$opts->{database},
+            'user|u=s'      => \$opts->{user},
+            'password|p=s'  => \$opts->{password},
+            'host|h=s'      => \$opts->{host},
+            'port|P=s'      => \$opts->{port},
+            'version|V'     => \$opts->{version},
+            'help|H'        => \$opts->{help},
+            'man|m'         => \$opts->{man},
+        );
+    };
+
+    do {
+        # Replace GetOptions in App::Prove and process the args. Yes, this is
+        # ugly, but it's the only way to inject additional options into the
+        # processing without running GetOptions twice (which has its own
+        # issues; see https://rt.cpan.org/Ticket/Display.html?id=114335).
+        no warnings 'redefine';
+        local *App::Prove::GetOptions = $get_options;
+        $self->SUPER::process_args(@_);
+    };
+
+    # Set argv to pass stuff through to MyTAP.
+    push @{ $self->{argv} } => (
+        (map { ('--mytap-option' => "suffix=$_") } @{ $self->{extensions} || [] }),
+        (map {
+            ('--mytap-option' => "$_=$opts->{$_}")
+        } grep {
+            $opts->{$_}
+        } qw(mysql database user password host port)),
+    );
+
+    $self->{extensions} ||= ['.my'];
+    return;
+}
+
+sub print_version {
+    my $self = shift;
+    print 'my_prove ', main->VERSION, $/;
+}
+
+sub _help {
+    my ( $self, $verbosity ) = @_;
     require Pod::Usage;
     Pod::Usage::pod2usage(
-        '-sections' => $opts->{man} ? '.+' : '(?i:(Usage|Options))',
+        '-sections' => $verbosity > 1 ? '.+' : '(?i:(Usage|Options))',
         '-verbose'  => 99,
         '-exitval'  => 0,
     )
 }
-
-if ($opts->{version}) {
-    print 'my_prove ', main->VERSION, $/;
-    exit;
-}
-
-my $app = App::Prove->new;
-$app->process_args(
-    @ARGV,
-    (map { ('--ext' => $_) } @{ $opts->{ext} || ['.my'] }),
-    (map { ('--mytap-option' => "suffix=$_") } @{ $opts->{ext} || [] }),
-    ($opts->{comments} ? ('--comments') : ()),
-    qw(--source MyTAP),
-    map {
-        ('--mytap-option' => "$_=$opts->{$_}")
-    } grep {
-        $opts->{$_}
-    } qw(mysql database user password host port)
-);
-
-exit($app->run ? 0 : 1);
-
 __END__
 
 =encoding utf8
