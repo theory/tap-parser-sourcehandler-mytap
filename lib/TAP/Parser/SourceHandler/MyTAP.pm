@@ -91,14 +91,14 @@ won't need to use this module directly.
 
 =head2 Testing with MyTAP
 
-If you just want to write tests with L<MyTAP|http://github.org/theory/mytap/>,
+If you just want to write tests with L<MyTAP|https://github.org/theory/mytap/>,
 here's how:
 
 =over
 
 =item *
 
-Download L<MyTAP|http://github.org/theory/mytap/> and install it into your
+Download L<MyTAP|https://github.org/theory/mytap/> and install it into your
 MySQL server:
 
   mysql -u root < mytap.sql
@@ -341,14 +341,14 @@ sub make_iterator {
 
 =head1 Support
 
-This module is managed in an open L<GitHub
-repository|http://github.com/theory/tap-parser-sourcehandler-mytap/>. Feel
-free to fork and contribute, or to clone
+This module is managed in an open
+L<GitHub repository|https://github.com/theory/tap-parser-sourcehandler-mytap/>.
+Feel free to fork and contribute, or to clone
 C<git://github.com/theory/tap-parser-sourcehandler-mytap.git> and send
 patches!
 
 Found a bug? Please
-L<post|http://github.com/theory/tap-parser-sourcehandler-mytap/issues> or
+L<post|https://github.com/theory/tap-parser-sourcehandler-mytap/issues> or
 L<email|mailto:bug-tap-parser-sourcehandler-mytap@rt.cpan.org> a report!
 
 =head1 Author
@@ -357,7 +357,7 @@ David E. Wheeler <dwheeler@cpan.org>
 
 =head1 Copyright and License
 
-Copyright (c) 2010-2015 David E. Wheeler. Some Rights Reserved.
+Copyright (c) 2010-2016 David E. Wheeler. Some Rights Reserved.
 
 This module is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself.

@@ -1,7 +1,7 @@
 TAP/Parser/SourceHandler/MyTAP version 3.27
 ===========================================
 
-This module adds support for executing [MyTAP](http://github.com/theory/mytap)
+This module adds support for executing [MyTAP](https://github.com/theory/mytap)
 MySQL tests under Test::Harness and C<prove>. This is useful for executing
 your Perl tests and your MySQL tests together, and analysing their results.
 
@@ -54,7 +54,7 @@ TAP::Parser::SourceHandler::MyTAP requires TAP::Parser::SourceHandler.
 Copyright and Licence
 ---------------------
 
-Copyright (c) 2010-2015 David E. Wheeler. Some Rights Reserved.
+Copyright (c) 2010-2016 David E. Wheeler. Some Rights Reserved.
 
 This module is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself.
