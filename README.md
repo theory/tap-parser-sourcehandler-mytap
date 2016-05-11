@@ -1,4 +1,4 @@
-TAP/Parser/SourceHandler/MyTAP version 3.27
+TAP/Parser/SourceHandler/MyTAP version 3.28
 ===========================================
 
 This module adds support for executing [MyTAP](https://github.com/theory/mytap)

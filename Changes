@@ -1,5 +1,7 @@
 Revision history for Perl extension TAP::Parser::SourceHandler::MyTAP.
 
+3.28
+
 3.27  2016-05-11T23:57:32Z
       - Fixed password handling.
       - Refactored `my_prove` to better follow the interface provided by
